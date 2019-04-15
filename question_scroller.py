@@ -27,7 +27,7 @@ def write_now(file_question_urls, file_questions, starting_point, browser):
 	for index, div in enumerate(mydivs):
 		if starting_point <= index:
 			file_question_urls.write(div['href'].encode('utf-8') + "\n")
-			print div['href']
+			print(div['href'])
 			file_questions.write(div.findAll("span", { "class" : "rendered_qtext" })[0].text.encode('utf-8') + "\n")
 
 	file_question_urls.close()
@@ -50,13 +50,13 @@ def get_topic_questions(topic, num_posts, driver_location):
 		starting_point = int(counts[-1][:-1])
 
 	current_url = construct_topic_url(topic)
-	print 'Starting from %d' % (starting_point)
+	print('Starting from %d' % (starting_point))
 	#display = Display(visible=0, size=(800, 600))
 	#display.start()
 	browser = webdriver.Chrome(driver_location)
 	browser.get(current_url)
 
-	print browser.title
+	print(browser.title)
 	posts = browser.find_elements_by_css_selector("div.pagedlist_item")
 	prev_len = 0
 	current_post_len = len(posts)
@@ -67,8 +67,8 @@ def get_topic_questions(topic, num_posts, driver_location):
 		browser.execute_script("window.scrollTo(0, document.body.scrollHeight * 10)")
 		posts = browser.find_elements_by_css_selector("div.pagedlist_item")
 		time.sleep(3)
-		print 'Scrolling for %s %d' % (topic, len(posts))
-		print datetime.now()
+		print('Scrolling for %s %d' % (topic, len(posts)))
+		print(datetime.now())
 		prev_len = current_post_len
 		current_post_len = len(posts)
 		if current_post_len == prev_len:
@@ -76,11 +76,11 @@ def get_topic_questions(topic, num_posts, driver_location):
 		else:
 			counter = 0
 		if counter > 15:
-			print 'Please help!!!!!!!!!'
+			print('Please help!!!!!!!!!')
 			time.sleep(60)
 		if counter > 20:
 			write_now(file_question_urls, file_questions, starting_point, browser)
-			print 'Starting again!'
+			print('Starting again!')
 			browser.quit()
 			# display.stop()
 			if starting_point <= len(posts) + 20:
@@ -110,7 +110,7 @@ def main():
 		try:
 			starting_point = get_topic_questions(args.topic, args.num_posts, args.driver_location)
 			if starting_point < args.num_posts:
-				print 'Going again!'
+				print('Going again!')
 				continue
 		except ValueError as e:
 			continue
