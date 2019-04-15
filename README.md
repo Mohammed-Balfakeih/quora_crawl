@@ -2,7 +2,7 @@
 Script to dowload questions related to a particular topic on Quora
 
 # Requirements
-- Python 2
+- Python 3
 run `pip install -r requirements.txt`
 
 # Basic Usage
